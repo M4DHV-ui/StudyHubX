@@ -198,9 +198,9 @@ footer {
   margin-top: 20px;
   padding-left: 20px;
   margin-top: 20px;
-  display: flex;          /* 👈 makes horizontal */
-  gap: 30px;              /* space between cards */
-  flex-wrap: wrap;        /* responsive */
+  display: flex;          
+  gap: 30px;             
+  flex-wrap: wrap;        
 }
 
 .subject-box h4 {
