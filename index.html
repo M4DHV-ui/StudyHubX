@@ -5,20 +5,32 @@
   <meta charset="UTF-8">
   <title>StudyHub X</title>
   <link rel="stylesheet" href="style.css">
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
 <script src="script.js"></script>
   <header>
     <div class="logo">Study<span>Hub</span> X</div>
-    <nav>
-      <button onclick="openLogin()">Login</button>
-    </nav>
+     
+    <div class="card">
+  
+    <button onclick="goLogin()" class="nav-btn">Log In</button>
+
+<script>
+function goLogin(){
+  window.location.href = "log in.html";
+}
+</script>
+    
+    
+   </div>
   </header>
 
   <section class="hero">
     <div class="hero-left">
-      <h1>ALL Study Resources<br> In One Place</h1>
+      <h1>All Study Resources <br> In One Place</h1>
       <p>Lecture Notes • Video Lectures • PYQs • Random Tests</p>
 
       <div class="branch-box">
@@ -32,12 +44,7 @@
       </div>
     </div>
 
-    <div class="hero-right">
-      <div class="search-card">
-        <h3>Universal Search</h3>
-        <input type="text" placeholder="Search subjects...">
-      </div>
-    </div>
+   
   </section>
 
   <section class="features">
@@ -51,7 +58,7 @@
       <h2>🎥 Video Lectures</h2>
       <p>Watch curated playlists for your branch.</p>
      
-      <button  href="videolecture.html" class="nav-btn">Watch Now</button>
+      <button  href="videolecher.html" class="nav-btn">Watch Now</button>
     </div>
 
     <div class="card">
@@ -66,13 +73,11 @@
       <button>Start Test</button>
     </div>
   </section>
-
+  
   
   <footer>
     <p>© 2026 StudyHub X | Made for Diploma Project</p>
   </footer>
 
 </body>
-
 </html>
-
