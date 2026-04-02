@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Important Lectures</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  margin-top: 30px;
+  border-bottom: 2px solid #22c55e;
+  padding-bottom: 5px;
+}
+
+#player {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.video-card {
+  background: #1e293b;
+  padding: 10px;
+  border-radius: 10px;
+  width: 250px;
+  cursor: pointer;
+}
+
+.video-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.watch-btn {
+  display: block;
+  margin-top: 8px;
+  padding: 6px;
+  text-align: center;
+  background: #22c55e;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.subject-box {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>🔥 Important Lectures</h1>
+
+<!-- 🎬 VIDEO PLAYER -->
+<div id="player">
+  <p>👉 Click any video to play here</p>
+</div>
+
+<!-- 📚 VIDEO LIST -->
+<div id="videoContainer"></div>
+
+<script>
+
+// 🔥 DATA
+const data = {
+
+  "Python": [
+    { title: "Python Full Course", videoId: "rfscVS0vtbw" }
+  ],
+
+  "Java": [
+    { title: "Java Full Course", videoId: "grEKMHGYyns" }
+  ],
+
+  "Android Development": [
+    { title: "Android App Development", videoId: "fis26HvvDII" }
+  ],
+
+  "Programming in C": [
+    { title: "C Programming Full Course", videoId: "irqbmMNs2Bo" }
+  ],
+
+  ".NET": [
+    { title: ".NET Full Course", videoId: "4eUoK5o4p9Y" }
+  ],
+
+  "Git & GitHub": [
+    { title: "Git and GitHub Tutorial", videoId: "apGV9Kg7ics" }
+  ],
+
+  "DBMS + SQL": [
+    { title: "DBMS Full Course", videoId: "d8Y0XhP6kJg" },
+    { title: "SQL Full Course", videoId: "HXV3zeQKqGY" }
+  ],
+
+  "Applet (Java Applet)": [
+    { title: "Java Applet Basics", videoId: "o6c3bK0xU9A" }
+  ]
+
+};
+
+// 🔥 PLAY FUNCTION
+function playVideo(videoId) {
+  const player = document.getElementById("player");
+
+  player.innerHTML = `
+    <iframe width="90%" height="400"
+    src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+    frameborder="0" allowfullscreen>
+    </iframe>
+  `;
+}
+
+// 🔥 UI GENERATE
+const container = document.getElementById("videoContainer");
+
+for (let subject in data) {
+  let section = document.createElement("div");
+
+  section.innerHTML = `<h2>${subject}</h2>`;
+
+  let subjectBox = document.createElement("div");
+  subjectBox.className = "subject-box";
+
+  data[subject].forEach(video => {
+    let card = document.createElement("div");
+    card.className = "video-card";
+
+    card.innerHTML = `
+      <img src="https://img.youtube.com/vi/${video.videoId}/0.jpg">
+      <h3>${video.title}</h3>
+      <button class="watch-btn" onclick="playVideo('${video.videoId}')">
+        ▶ Play
+      </button>
+    `;
+
+    subjectBox.appendChild(card);
+  });
+
+  section.appendChild(subjectBox);
+  container.appendChild(section);
+}
+
+</script>
+
+</body>
+</html>
