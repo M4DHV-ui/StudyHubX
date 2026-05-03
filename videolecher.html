@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Lectures — StudyHub X</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0a;
+    color: #f1f1f1;
+    min-height: 100vh;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .logo { font-size: 18px; font-weight: 600; }
+  .logo span { color: #a855f7; }
+  .logo em { color: #00e5ff; font-style: normal; }
+
+  .btn-login {
+    background: #00e5ff;
+    color: #0a0a0a;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .page { max-width: 960px; margin: 0 auto; padding: 48px 24px; }
+
+  h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .sub { color: #555; font-size: 14px; margin-bottom: 32px; }
+
+  /* PLAYER */
+  #player {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    margin-bottom: 12px;
+  }
+
+  #player iframe { width: 100%; height: 100%; display: block; border: none; }
+
+  #player-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    font-size: 14px;
+  }
+
+  #now-playing {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 40px;
+  }
+  #now-playing span { color: #00e5ff; font-weight: 500; }
+
+  /* SUBJECT */
+  .subject { margin-bottom: 36px; }
+
+  .subject-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  /* CARD */
+  .card {
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: #00e5ff; transform: translateY(-2px); }
+  .card.active { border-color: #00e5ff; }
+
+  .thumb-wrap { position: relative; }
+  .thumb-wrap img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+
+  .play-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.35);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .card:hover .play-icon { opacity: 1; }
+
+  .play-icon svg { width: 36px; height: 36px; fill: #00e5ff; }
+
+  .card-info { padding: 12px 14px; }
+
+  .card-info h3 {
+    font-size: 13px;
+    font-weight: 500;
+    color: #e5e5e5;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Study<span>Hub</span> <em>X</em></div>
+  <button class="btn-login">Log In</button>
+</nav>
+
+<div class="page">
+  <h1>Video Lectures</h1>
+  <p class="sub">Watch curated playlists for your branch.</p>
+
+  <div id="player">
+    <div id="player-placeholder">Select a video to start watching</div>
+  </div>
+  <p id="now-playing" style="display:none;">Now playing: <span id="playing-title"></span></p>
+
+  <div id="videoContainer"></div>
+</div>
+
+<script>
+const data = {
+  "Python":               [{ title: "Python Full Course",        videoId: "rfscVS0vtbw" }],
+  "Java":                 [{ title: "Java Full Course",          videoId: "grEKMHGYyns" }],
+  "Android Development":  [{ title: "Android App Development",   videoId: "fis26HvvDII" }],
+  "Programming in C":     [{ title: "C Programming Full Course", videoId: "irqbmMNs2Bo" }],
+  ".NET":                 [{ title: ".NET Full Course",          videoId: "4eUoK5o4p9Y" }],
+  "Git & GitHub":         [{ title: "Git and GitHub Tutorial",   videoId: "apGV9Kg7ics" }],
+  "DBMS + SQL": [
+    { title: "DBMS Full Course", videoId: "d8Y0XhP6kJg" },
+    { title: "SQL Full Course",  videoId: "HXV3zeQKqGY" }
+  ],
+  "Applet": [{ title: "Java Applet Basics", videoId: "o6c3bK0xU9A" }]
+};
+
+let activeCard = null;
+
+function playVideo(videoId, title, cardEl) {
+  document.getElementById("player").innerHTML = `
+    <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+  `;
+  document.getElementById("playing-title").textContent = title;
+  document.getElementById("now-playing").style.display = "block";
+
+  if (activeCard) activeCard.classList.remove("active");
+  cardEl.classList.add("active");
+  activeCard = cardEl;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+const container = document.getElementById("videoContainer");
+
+for (const subject in data) {
+  const sec = document.createElement("div");
+  sec.className = "subject";
+  sec.innerHTML = `<div class="subject-name">${subject}</div>`;
+
+  const grid = document.createElement("div");
+  grid.className = "grid";
+
+  data[subject].forEach(video => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="thumb-wrap">
+        <img src="https://img.youtube.com/vi/${video.videoId}/mqdefault.jpg" alt="${video.title}">
+        <div class="play-icon">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+      <div class="card-info"><h3>${video.title}</h3></div>
+    `;
+    card.onclick = () => playVideo(video.videoId, video.title, card);
+    grid.appendChild(card);
+  });
+
+  sec.appendChild(grid);
+  container.appendChild(sec);
+}
+</script>
+</body>
+</html>

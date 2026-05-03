@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYQs — StudyHub X</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0a;
+    color: #f1f1f1;
+    min-height: 100vh;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .logo { font-size: 18px; font-weight: 600; }
+  .logo span { color: #a855f7; }
+  .logo em { color: #00e5ff; font-style: normal; }
+
+  .btn-login {
+    background: #00e5ff;
+    color: #0a0a0a;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 48px 24px; }
+
+  h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .sub { color: #555; font-size: 14px; margin-bottom: 40px; }
+
+  .subject { margin-bottom: 36px; }
+
+  .subject-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: #00e5ff; transform: translateY(-2px); }
+
+  .card img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    display: block;
+    background: #1a1a1a;
+  }
+
+  .card-label {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #e5e5e5;
+  }
+
+  /* MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal.open { display: flex; }
+
+  .modal img {
+    max-width: 88%;
+    max-height: 88vh;
+    border-radius: 12px;
+    border: 1px solid #222;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    background: #111;
+    border: 1px solid #222;
+    color: #f1f1f1;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+  }
+  .close-btn:hover { border-color: #00e5ff; color: #00e5ff; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Study<span>Hub</span> <em>X</em></div>
+  <button class="btn-login">Log In</button>
+</nav>
+
+<div class="page">
+  <h1>Previous Year Questions</h1>
+  <p class="sub">Practice PYQs to boost exam confidence.</p>
+  <div id="container"></div>
+</div>
+
+<div class="modal" id="modal" onclick="closeModal()">
+  <button class="close-btn" onclick="closeModal()">✕</button>
+  <img id="modalImg" onclick="event.stopPropagation()">
+</div>
+
+<script>
+const data = {
+  "Java": [
+    { title: "Java 2022", img: "images/java1.jpg" },
+    { title: "Java 2023", img: "images/java2.jpg" }
+  ],
+  "DBMS": [
+    { title: "DBMS 2022", img: "images/dbms1.jpg" },
+    { title: "DBMS 2023", img: "images/dbms2.jpg" }
+  ],
+  "Python": [
+    { title: "Python 2023", img: "images/python1.jpg" }
+  ]
+};
+
+const container = document.getElementById("container");
+
+for (const subject in data) {
+  const sec = document.createElement("div");
+  sec.className = "subject";
+  sec.innerHTML = `<div class="subject-name">${subject}</div>`;
+
+  const grid = document.createElement("div");
+  grid.className = "grid";
+
+  data[subject].forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${item.img}" alt="${item.title}">
+      <div class="card-label">${item.title}</div>
+    `;
+    card.onclick = () => openModal(item.img);
+    grid.appendChild(card);
+  });
+
+  sec.appendChild(grid);
+  container.appendChild(sec);
+}
+
+function openModal(src) {
+  document.getElementById("modalImg").src = src;
+  document.getElementById("modal").classList.add("open");
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.remove("open");
+}
+
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyHub X</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0a;
+    color: #f1f1f1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .logo { font-size: 18px; font-weight: 600; }
+  .logo span { color: #a855f7; }
+  .logo em { color: #00e5ff; font-style: normal; }
+
+  .btn-login {
+    background: #00e5ff;
+    color: #0a0a0a;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-login:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 80px 24px 64px;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: #00e5ff;
+  }
+
+  .hero p {
+    color: #555;
+    font-size: 15px;
+  }
+
+  /* CARDS */
+  .cards {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 14px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: #00e5ff; transform: translateY(-2px); }
+
+  .card-icon { font-size: 22px; }
+
+  .card h2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e5e5e5;
+  }
+
+  .card p {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .card a { text-decoration: none; margin-top: 8px; }
+
+  .card-btn {
+    width: 100%;
+    background: rgba(0,229,255,0.1);
+    border: 1px solid rgba(0,229,255,0.2);
+    color: #00e5ff;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .card-btn:hover { background: rgba(0,229,255,0.18); }
+
+  /* FOOTER */
+  footer {
+    margin-top: auto;
+    padding: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: #333;
+    border-top: 1px solid #1a1a1a;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Study<span>Hub</span> <em>X</em></div>
+  <button class="btn-login" onclick="window.location.href='log in.html'">Log In</button>
+</nav>
+
+<div class="hero">
+  <h1>All Study Resources<br><em>In One Place</em></h1>
+  <p>Lecture Notes • Video Lectures • PYQs</p>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <div class="card-icon">📘</div>
+    <h2>Lecture Notes</h2>
+    <p>Access clean, organized subject-wise notes.</p>
+    <a href="lecturenotes.html"><button class="card-btn">View Notes</button></a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🎥</div>
+    <h2>Video Lectures</h2>
+    <p>Watch curated playlists for your branch.</p>
+    <a href="videolecher.html"><button class="card-btn">Watch</button></a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">📝</div>
+    <h2>Previous Year Questions</h2>
+    <p>Practice PYQs to boost exam confidence.</p>
+    <a href="pyq.html"><button class="card-btn">Download</button></a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">💬</div>
+    <h2>Need Any Help?</h2>
+    <p>YASH is ready to help you anytime.</p>
+    <a href="chatwithai.html"><button class="card-btn">Chat</button></a>
+  </div>
+</div>
+
+<footer>© 2026 StudyHub X | Made for Diploma Project</footer>
+
+</body>
+</html>

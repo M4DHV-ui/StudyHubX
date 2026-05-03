@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture Notes — StudyHub X</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0a;
+    color: #f1f1f1;
+    min-height: 100vh;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .logo { font-size: 18px; font-weight: 600; }
+  .logo span { color: #a855f7; }
+  .logo em { color: #00e5ff; font-style: normal; }
+
+  .btn-login {
+    background: #00e5ff;
+    color: #0a0a0a;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 48px 24px; }
+
+  h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .sub { color: #555; font-size: 14px; margin-bottom: 28px; }
+
+  #search {
+    width: 100%;
+    max-width: 420px;
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 10px;
+    padding: 11px 16px;
+    color: #f1f1f1;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+    margin-bottom: 40px;
+    display: block;
+    transition: border-color 0.2s;
+  }
+  #search::placeholder { color: #444; }
+  #search:focus { border-color: #00e5ff; }
+
+  .subject { margin-bottom: 36px; }
+
+  .subject-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 12px;
+    padding: 18px;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: #00e5ff; transform: translateY(-2px); }
+
+  .card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    color: #e5e5e5;
+  }
+
+  .view-btn {
+    font-size: 12px;
+    font-weight: 600;
+    color: #00e5ff;
+    background: rgba(0,229,255,0.08);
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    width: 100%;
+    transition: background 0.2s;
+  }
+  .view-btn:hover { background: rgba(0,229,255,0.15); }
+
+  .empty { color: #444; font-size: 14px; padding: 20px 0; }
+</style>
+</head>
+<body>
+
+
+<div class="page">
+  <h1>Lecture Notes</h1>
+  <p class="sub">Access clean, organized subject-wise notes.</p>
+  <input type="text" id="search" placeholder="Search notes..." oninput="render()">
+  <div id="container"></div>
+</div>
+
+<script>
+const data = {
+  "DBMS": [
+    { title: "DBMS Notes", link: "https://online.flippingbook.com/view/628000944/" },
+  ],
+  "Java": [
+    { title: "Java Notes", link: "#" },
+  ],
+  "Python": [
+    { title: "Python Basics", link: "https://online.flippingbook.com/view/627723649/" },
+  ]
+};
+
+function render() {
+  const q = document.getElementById("search").value.toLowerCase();
+  const container = document.getElementById("container");
+  container.innerHTML = "";
+
+  for (const subject in data) {
+    const notes = data[subject].filter(n => !q || n.title.toLowerCase().includes(q) || subject.toLowerCase().includes(q));
+    if (!notes.length) continue;
+
+    const sec = document.createElement("div");
+    sec.className = "subject";
+    sec.innerHTML = `<div class="subject-name">${subject}</div>`;
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    notes.forEach(note => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `<h3>${note.title}</h3><button class="view-btn">View →</button>`;
+      card.onclick = () => note.link !== '#' && window.open(note.link, "_blank");
+      grid.appendChild(card);
+    });
+
+    sec.appendChild(grid);
+    container.appendChild(sec);
+  }
+
+  if (!container.children.length) {
+    container.innerHTML = `<p class="empty">No notes found.</p>`;
+  }
+}
+
+render();
+</script>
+</body>
+</html>

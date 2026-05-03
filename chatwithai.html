@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yash.AI — StudyHub X</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0a;
+    color: #f1f1f1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    border-bottom: 1px solid #1a1a1a;
+    flex-shrink: 0;
+  }
+
+  .logo { font-size: 18px; font-weight: 600; }
+  .logo span { color: #a855f7; }
+  .logo em { color: #00e5ff; font-style: normal; }
+
+  .btn-login {
+    background: #00e5ff;
+    color: #0a0a0a;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* CHAT AREA */
+  .chat-wrap {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* HEADER */
+  .chat-header {
+    padding: 24px 0 16px;
+    flex-shrink: 0;
+  }
+
+  .chat-header h2 { font-size: 20px; font-weight: 600; }
+  .chat-header p { font-size: 13px; color: #555; margin-top: 4px; }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #555;
+    margin-top: 8px;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+  }
+
+  /* MESSAGES */
+  #chat {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 0;
+    scrollbar-width: thin;
+    scrollbar-color: #222 transparent;
+  }
+
+  .msg {
+    max-width: 75%;
+    padding: 11px 15px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    word-break: break-word;
+  }
+
+  .user {
+    align-self: flex-end;
+    background: #a855f7;
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+
+  .bot {
+    align-self: flex-start;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    color: #e5e5e5;
+    border-bottom-left-radius: 4px;
+  }
+
+  .typing-dots span {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #555;
+    margin: 0 2px;
+    animation: blink 1.2s infinite;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.2; }
+    40% { opacity: 1; }
+  }
+
+  /* INPUT */
+  .input-wrap {
+    padding: 16px 0 24px;
+    flex-shrink: 0;
+  }
+
+  .input-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 12px;
+    padding: 8px 8px 8px 16px;
+    transition: border-color 0.2s;
+  }
+  .input-inner:focus-within { border-color: #00e5ff; }
+
+  #input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #f1f1f1;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+  }
+  #input::placeholder { color: #444; }
+
+  #sendBtn {
+    background: #00e5ff;
+    border: none;
+    color: #0a0a0a;
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+  }
+  #sendBtn:hover { opacity: 0.85; }
+  #sendBtn svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Study<span>Hub</span> <em>X</em></div>
+  <button class="btn-login">Log In</button>
+</nav>
+
+<div class="chat-wrap">
+  <div class="chat-header">
+    <h2>Yash.AI</h2>
+    <p>Your study assistant — ask anything.</p>
+    <div class="status"><div class="dot"></div> Online</div>
+  </div>
+
+  <div id="chat"></div>
+
+  <div class="input-wrap">
+    <div class="input-inner">
+      <input id="input" placeholder="Message Yash..." onkeydown="if(event.key==='Enter') send()" />
+      <button id="sendBtn" onclick="send()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const chatEl = document.getElementById("chat");
+const inputEl = document.getElementById("input");
+
+const API_URL = "https://garimasharma567890-maya-backend.hf.space/chat";
+
+const SYSTEM_PROMPT = `
+You are Yash, a smart and confident AI assistant inside StudyHub X.
+Rules:
+- Speak ONLY in English
+- Keep answers short and clear
+- Be helpful and confident
+Role:
+- Help students with study topics
+- Suggest notes, PYQs, lectures
+`;
+
+function addMessage(text, sender) {
+  const div = document.createElement("div");
+  div.className = "msg " + sender;
+  div.innerText = text;
+  chatEl.appendChild(div);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return div;
+}
+
+function addTyping() {
+  const div = document.createElement("div");
+  div.className = "msg bot typing-dots";
+  div.innerHTML = "<span></span><span></span><span></span>";
+  chatEl.appendChild(div);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return div;
+}
+
+async function send() {
+  const text = inputEl.value.trim();
+  if (!text) return;
+
+  addMessage(text, "user");
+  inputEl.value = "";
+
+  const typing = addTyping();
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: "1",
+        gender: "Female",
+        message: SYSTEM_PROMPT + "\nUser: " + text
+      })
+    });
+
+    const data = await res.json();
+    typing.remove();
+    addMessage(data.reply || "No reply 😅", "bot");
+
+  } catch (err) {
+    typing.remove();
+    addMessage("Failed to connect. Try again.", "bot");
+  }
+}
+
+addMessage("Hey! I'm Yash. Ask me anything about your studies 👋", "bot");
+</script>
+</body>
+</html>
